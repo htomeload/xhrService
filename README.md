@@ -13,7 +13,16 @@ It have also have some minor but critical features, for example...
 * All function return promise, resolve only on success request and reject on any failed case, so there can be sure that function would success request, otherwise, error can be catch.
 * On success request, library will handle JSON.parse() before resolve, so, return value can be used right away.
 
-Currently, there is available only Ionic Framework version, and for now, works only on android, for iOS, its recommend to use Ionic Framework's native plugin like HTTP instead. 
+Currently, there is available in Web version and Ionic Framework version.
+- Web version
+Just do 
+``
+<script src="xhr.service.js"></script>
+``
+and you're ready to go. Usage by using xhrService or window.xhrService following by `post`, `get` or `create` function.
+
+- Ionic Framework version
+For now, works only on android, for iOS, its recommend to use Ionic Framework's native plugin like HTTP instead. 
 
 ## Note
 For uploading to server, as blob, library will assume that one parameter should have only one blob, also for files, library is assume that source of files is from input with type="file" and must pass parameter into function as for example, event.target.files, etc., files from source maybe selected more than one file, library will try to packing it into same parameter.
