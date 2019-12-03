@@ -23,7 +23,7 @@
         enableLog: true
     };
 
-    function XhrService() {
+    XhrService = () => {
         let xhr_ = {};
 
         xhr_.post = async (route, params) => {
