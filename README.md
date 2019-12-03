@@ -26,7 +26,7 @@ Just do
 and you're ready to go. Usage by using xhrService or window.xhrService following by `post`, `get` or `create` function.
 
 - Ionic Framework version
-Just import StorageLite into page then declare in constructor and you're set.
+Just import XhrService into page then declare in constructor and you're set.
 
 ## Note
 For uploading to server, as blob, library will assume that one parameter should have only one blob, also for files, library is assume that source of files is from input with type="file" and must pass parameter into function as for example, event.target.files, etc., files from source maybe selected more than one file, library will try to packing it into same parameter.
