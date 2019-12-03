@@ -36,9 +36,24 @@ And for Ionic Framework verion, for now, works only on android, for iOS, its rec
 ## Available functions
 - post(route: string, params: object)
     - Create post request, parameter may be empty object({}) if no parameter to sent, object must be in patern key-value format, for kind of value that support is `blob`, `number`, `string`, `file`, `object` and `array`.
+    ```bash
+    xhrservice.post('/api/login', {username: 'test', password: '******'});
+    
+    // return: <promise> resolve(data), reject(error)
+    ```
 
 - get(route: string, params: object)
     - Create get request, parameter may be empty object({}) if no parameter to sent, object must be in patern key-value format, for kind of value that support is `number`, `string`, `object` and `array`.
+    ```bash
+    xhrservice.get('/api/book', {searchword: 'cooking'});
+    
+    // return: <promise> resolve(data), reject(error)
+    ```
 
 - create(method: string, route: string, params: object)
     - Alternative function if don't like to be static in kind of method to create request, this function will sent route and params into function up to method, support method is `post` and `get`.
+    ```bash
+    xhrservice.create('post', '/api/login', {username: 'test', password: '******'});
+    
+    // return: <promise> resolve(data), reject(error)
+    ```
