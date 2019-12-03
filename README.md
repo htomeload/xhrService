@@ -16,9 +16,11 @@ It have also have some minor but critical features, for example...
 Currently, there is available in Web version and Ionic Framework version.
 - Web version
 Just do 
-``
+
+```
 <script src="xhr.service.js"></script>
-``
+```
+
 and you're ready to go. Usage by using xhrService or window.xhrService following by `post`, `get` or `create` function.
 
 - Ionic Framework version
