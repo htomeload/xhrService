@@ -162,6 +162,18 @@ export class XhrService {
 
 	async create(method: string, route: string, params: any) {
 		try {
+            for(let key of Object.keys(params)) {
+                if ((typeof params[key]['files'] !== 'undefined' && params[key]['files'].length > 0) || params[key] instanceof Blob) {
+                    if (method == "get" && options.enableLog) {
+                        console.warn("XhrService: WARNING => GET request method isn't support for uploading file, aborted function");
+                        const promise_ = await new Promise((resolve, reject) => {
+                            reject();
+                        });
+                        return promise_;
+                    }
+                }
+            }
+
             switch(method.toLowerCase()) {
                 case 'post': {
                     return this.post(route, params);

@@ -29,7 +29,7 @@ and you're ready to go. Usage by using xhrService or window.xhrService following
     - Just import XhrService into page then declare in constructor and you're set.
 
 ## Note
-For uploading to server, as blob, library will assume that one parameter should have only one blob, also for files, library is assume that source of files is from input with type="file" and must pass parameter into function as for example, event.target.files, etc., files from source maybe selected more than one file, library will try to packing it into same parameter.
+For uploading to server, as blob, library will assume that one parameter should have only one blob, also for files, library is assume that source of files is from input with type="file" and must pass parameter into function as for example, event.target, then library will retrive all available in files that next from event.target, etc., files from source maybe selected more than one file, library will try to packing it into same parameter.
 
 And for Ionic Framework verion, for now, works only on android, for iOS, its recommend to use Ionic Framework's native plugin like HTTP instead. 
 
@@ -51,9 +51,10 @@ And for Ionic Framework verion, for now, works only on android, for iOS, its rec
     ```
 
 - create(method: string, route: string, params: object)
-    - Alternative function if don't like to be static in kind of method to create request, this function will sent route and params into function up to method, support method is `post` and `get`.
+    - Alternative function for manually set kind of method to create request, this function will sent route and params into function up to method, support method is `post` and `get`.
     ```bash
     xhrservice.create('post', '/api/login', {username: 'test', password: '******'});
     
     // return: <promise> resolve(data), reject(error)
     ```
+    Note: Function will check all parameter is support by request method, for example, if it found file or blob in parameters but method is `get` then function will be aborted and return promise with empty reject().
