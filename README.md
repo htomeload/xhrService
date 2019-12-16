@@ -15,6 +15,13 @@ It have also have some minor but critical features, for example...
 
 Currently, there is available in Web version and Ionic Framework version.
 
+## Requirement
+* JavaScript (.js)
+    - Internet Explorer > 10, Google Chrome > 48–55, Mozilla Firefox > 44–50, Microsoft Edge > 14, Opera > 35–42, Apple Safari > 10, SeaMonkey > 2.24–2.30 or higher with JavaScript ES6 supports, or Framework that support JavaScript ES6.
+
+* Ionic Framework (ionic)
+    - Ionic Framework >= 3
+
 ## Usage
 - Web version
     - Just do 
