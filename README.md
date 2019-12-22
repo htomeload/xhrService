@@ -5,7 +5,7 @@ xhrService is library which base on XMLHttpRequest of JavaScript, it can do vari
 * GET request with automated encode parameter into string and concat it with url.
 * POST request with or without upload file in same request.
 
-It have also have some minor but critical features, for example...
+It also have some minor but critical features, for example...
 * Simplest receive parameters as one plain object and encode each parameters into correct form before sent.
 * Logging every actions from beginning of building request parameters to sending request status.
 * Logger can be easy enabled or disabled with set options enableLog into true or false, and can filter some sensitive parameter out from log by add key into sensitiveKeyword with value as true.
