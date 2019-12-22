@@ -33,12 +33,14 @@ Currently, there is available in Web version and Ionic Framework version.
 and you're ready to go. Usage by using xhrService or window.xhrService following by `post`, `get` or `create` function.
 
 - Ionic Framework version
-    - Just import XhrService into page then declare in constructor and you're set.
+    - Android
+        - Just import XhrService into page then declare in constructor and you're set.
+
+    - iOS
+        - Open file config.xml, under <widget> section, add <access origin="http://*" /> and <access origin="https://*" />, then import XhrService into page then declare in constructor, that's all.
 
 ## Note
 For uploading to server, as blob, library will assume that one parameter should have only one blob, also for files, library is assume that source of files is from **input** with **type="file"** and must pass parameter into function as for example, *event.target*, then library will retrive all available in *files* that next from *event.target*, etc., files from source maybe selected more than one file, library will try to packing it into same parameter.
-
-And for Ionic Framework verion, for now, works only on android, for iOS, its recommend to use Ionic Framework's native plugin like HTTP instead. 
 
 ## Available functions
 - post(route: string, params: object)
