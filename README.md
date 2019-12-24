@@ -33,16 +33,35 @@ Currently, there is available in Web version and Ionic Framework version.
 and you're ready to go. Usage by using xhrService or window.xhrService following by `post`, `get` or `create` function.
 
 - Ionic Framework version
+    * There is specifies detail in each platform, but usage in framework is same.
     - Android
-        - Just import XhrService into page then declare in constructor and you're set.
-
+        - Open file config.xml, under `<platform name="android">` section, next from `<widget>` section, add 
+        ```
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
+            <application android:usesCleartextTraffic="true" />
+            <application android:networkSecurityConfig="@xml/network_security_config" />
+        </edit-config>
+        <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
+        ```
     - iOS
         - Open file config.xml, under `<widget>` section, add 
         ```
         <access origin="http://*" />
         <access origin="https://*" />
         ```
-        then import XhrService into page then declare in constructor, that's all.
+    * then just import XhrService into page then declare in constructor and you're set.
+    ```
+    import { XhrService } from './xhr.service' 
+
+    export class exampleClass {
+        ...
+
+        constructor(private `whatevername`: XhrService) {
+        }
+
+        ...
+    }
+    ```
 
 ## Note
 For uploading to server, as blob, library will assume that one parameter should have only one blob, also for files, library is assume that source of files is from **input** with **type="file"** and must pass parameter into function as for example, *event.target*, then library will retrive all available in *files* that next from *event.target*, etc., files from source maybe selected more than one file, library will try to packing it into same parameter.
