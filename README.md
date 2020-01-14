@@ -34,21 +34,30 @@ and you're ready to go. Usage by using xhrService or window.xhrService following
 
 - Ionic Framework version
     * There is specifies detail in each platform, but usage in framework is same.
-    - Android
-        - Open file config.xml, under `<platform name="android">` section, next from `<widget>` section, add 
-        ```
-        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
-            <application android:usesCleartextTraffic="true" />
-            <application android:networkSecurityConfig="@xml/network_security_config" />
-        </edit-config>
-        <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
-        ```
-    - iOS
-        - Open file config.xml, under `<widget>` section, add 
-        ```
-        <access origin="http://*" />
-        <access origin="https://*" />
-        ```
+        - Android
+            - Open file config.xml, under `<platform name="android">` section, next from `<widget>` section, add 
+            ```
+            <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
+                <application android:usesCleartextTraffic="true" />
+                <application android:networkSecurityConfig="@xml/network_security_config" />
+            </edit-config>
+            <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
+            ```
+        - iOS
+            - Open file config.xml, under `<widget>` section, add 
+            ```
+            <access origin="http://*" />
+            <access origin="https://*" />
+            ```
+            - In case of using insecure protocol like http://, then under `<platform name="ios">`, next from `<widget>`, add this config for allowed.
+            ```
+            <config-file parent="NSAppTransportSecurity" platform="ios" target="*-Info.plist">
+                <dict>
+                    <key>NSAllowsArbitraryLoads</key>
+                    <true />
+                </dict>
+            </config-file>
+            ```
     * then just import XhrService into page then declare in constructor and you're set.
     ```
     import { XhrService } from './xhr.service' 
