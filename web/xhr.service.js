@@ -28,13 +28,15 @@
 
         xhr_.post = async (route, params) => {
             try {
+                let xhr = new XMLHttpRequest();
+
+                xhr.open("POST", options.host + route, options.async);
+                xhr.timeout = options.timeout;
+                xhr.withCredentials = options.withCredentials;
+
+                let formData_ = await this._buildFormData(params);
+
                 const promise_ = await new Promise((resolve, reject) => {
-                    let xhr = new XMLHttpRequest();
-
-                    xhr.open("POST", options.host + route, options.async);
-                    xhr.timeout = options.timeout;
-                    xhr.withCredentials = options.withCredentials;
-
                     xhr.onerror = (event) => {
                         if (options.enableLog) {
                             console.log("XhrService: "+event.target.readyState+";"+event.target.status+" :", event);
@@ -65,18 +67,12 @@
                         }
                     };
 
-                    _buildFormData(params).then((formData_) => {
-                        if (formData_){
-                            xhr.send(formData_);
-                        }else{
-                            xhr.abort();
-                            reject();
-                        }
-                    }, (error) => {
-                        reject(error);
-                    }).catch((error) => {
-                        reject(error);
-                    });
+                    if (formData_){
+                        xhr.send(formData_);
+                    }else{
+                        xhr.abort();
+                        reject();
+                    }
                 });
 
                 return promise_;
@@ -91,59 +87,55 @@
 
         xhr_.get = async (route, params) => {
             try {
-                const promise_ = await new Promise((resolve, reject) => {
-                    let xhr = new XMLHttpRequest();
+                let xhr = new XMLHttpRequest();
 
-                    this._buildParamStr(params).then((paramStr) => {
-                        if (paramStr){
+                let paramStr = await this._buildParamStr(params);
+
+                if (options.enableLog) {
+                    console.log("XhrService: paramStr = "+paramStr);
+                    console.log("XhrService: Full URL with params URL string = ", options.host + route + "&" + paramStr);
+                }
+                xhr.open("GET", options.host + route + "&" + paramStr.substr(0, paramStr.length - 1), options.async);
+                xhr.timeout = options.timeout;
+                xhr.withCredentials = options.withCredentials;
+
+                const promise_ = await new Promise((resolve, reject) => {
+                    if (paramStr){
+                        xhr.onerror = (event) => {
                             if (options.enableLog) {
-                                console.log("XhrService: paramStr = "+paramStr);
-                                console.log("XhrService: Full URL with params URL string = ", options.host + route + "&" + paramStr);
+                                console.log("XhrService: "+event.target.readyState+";"+event.target.status+" :", event);
+                                console.log("XhrService: Error => ", event);
                             }
-                            xhr.open("GET", options.host + route + "&" + paramStr.substr(0, paramStr.length - 1), options.async);
-                            xhr.timeout = options.timeout;
-                            xhr.withCredentials = options.withCredentials;
-        
-                            xhr.onerror = (event) => {
-                                if (options.enableLog) {
-                                    console.log("XhrService: "+event.target.readyState+";"+event.target.status+" :", event);
-                                    console.log("XhrService: Error => ", event);
-                                }
-                                reject(event);
-                            };
-                            xhr.ontimeout = (event) => {
-                                if (options.enableLog) {
-                                    console.log("XhrService: "+event.target.readyState+";"+event.target.status+" :", event);
-                                    console.log("XhrService: Timeout => ", event);
-                                }
-                                reject(event);
-                            };
-                            xhr.onreadystatechange = (event) => {
-                                if (options.enableLog) {
-                                    console.log("XhrService: "+event.target.readyState+";"+event.target.status+" :", event);
-                                }
-                                if (event.target.readyState == 4 && event.target.status == 200) {
-                                    if (event.target.response.substr(0, 1) == "{" && event.target.response.substr(event.target.response.length-1, 1) == "}") {
-                                        if (options.enableLog) {
-                                            console.log("XhrService: Reponse => ", JSON.parse(event.target.response));
-                                        }
-                                        resolve(JSON.parse(event.target.response));
-                                    }else{
-                                        reject(event.target.response);
+                            reject(event);
+                        };
+                        xhr.ontimeout = (event) => {
+                            if (options.enableLog) {
+                                console.log("XhrService: "+event.target.readyState+";"+event.target.status+" :", event);
+                                console.log("XhrService: Timeout => ", event);
+                            }
+                            reject(event);
+                        };
+                        xhr.onreadystatechange = (event) => {
+                            if (options.enableLog) {
+                                console.log("XhrService: "+event.target.readyState+";"+event.target.status+" :", event);
+                            }
+                            if (event.target.readyState == 4 && event.target.status == 200) {
+                                if (event.target.response.substr(0, 1) == "{" && event.target.response.substr(event.target.response.length-1, 1) == "}") {
+                                    if (options.enableLog) {
+                                        console.log("XhrService: Reponse => ", JSON.parse(event.target.response));
                                     }
+                                    resolve(JSON.parse(event.target.response));
+                                }else{
+                                    reject(event.target.response);
                                 }
-                            };
-        
-                            xhr.send();
-                        }else{
-                            xhr.abort();
-                            reject();
-                        }
-                    }, (error) => {
-                        reject(error);
-                    }).catch((error) => {
-                        reject(error);
-                    });
+                            }
+                        };
+
+                        xhr.send();
+                    }else{
+                        xhr.abort();
+                        reject();
+                    }
                 });
 
                 return promise_;
@@ -169,15 +161,21 @@
                         }
                     }
                 }
-
+    
+                let res;
+    
                 switch(method.toLowerCase()) {
                     case 'post': {
-                        return this.post(route, params);
+                        res = await this.post(route, params);
+                        break;
                     }
                     case 'get': {
-                        return this.get(route, params);
+                        res = await this.get(route, params);
+                        break;
                     }
                 }
+    
+                return res;
             } catch (error) {
                 console.error(error);
                 const promise_ = await new Promise((resolve, reject) => {
