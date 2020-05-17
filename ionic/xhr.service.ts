@@ -23,6 +23,9 @@ const options = {
     withCredentials: false,
     enableLog: true
 };
+const regex = {
+    json: /(^(\{).*\}$)|(^(\[).*\]$)/
+};
 
 @Injectable({
 	providedIn: 'root'
@@ -60,7 +63,7 @@ export class XhrService {
                         console.log("XhrService: "+event.target.readyState+";"+event.target.status+" :", event);
                     }
 					if (event.target.readyState == 4 && event.target.status == 200) {
-						if (event.target.response.substr(0, 1) == "{" && event.target.response.substr(event.target.response.length-1, 1) == "}") {
+						if (regex.json.test(event.target.response)) {
                             if (options.enableLog) {
                                 console.log("XhrService: Reponse => ", JSON.parse(event.target.response));
                             }
@@ -124,7 +127,7 @@ export class XhrService {
                             console.log("XhrService: "+event.target.readyState+";"+event.target.status+" :", event);
                         }
                         if (event.target.readyState == 4 && event.target.status == 200) {
-                            if (event.target.response.substr(0, 1) == "{" && event.target.response.substr(event.target.response.length-1, 1) == "}") {
+                            if (regex.json.test(event.target.response)) {
                                 if (options.enableLog) {
                                     console.log("XhrService: Reponse => ", JSON.parse(event.target.response));
                                 }

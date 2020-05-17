@@ -22,6 +22,9 @@
         withCredentials: false,
         enableLog: true
     };
+    const regex = {
+        json: /(^(\{).*\}$)|(^(\[).*\]$)/
+    };
 
     XhrService = () => {
         let xhr_ = {};
@@ -56,7 +59,7 @@
                             console.log("XhrService: "+event.target.readyState+";"+event.target.status+" :", event);
                         }
                         if (event.target.readyState == 4 && event.target.status == 200) {
-                            if (event.target.response.substr(0, 1) == "{" && event.target.response.substr(event.target.response.length-1, 1) == "}") {
+                            if (regex.json.test(event.target.response)) {
                                 if (options.enableLog) {
                                     console.log("XhrService: Reponse => ", JSON.parse(event.target.response));
                                 }
@@ -120,7 +123,7 @@
                                 console.log("XhrService: "+event.target.readyState+";"+event.target.status+" :", event);
                             }
                             if (event.target.readyState == 4 && event.target.status == 200) {
-                                if (event.target.response.substr(0, 1) == "{" && event.target.response.substr(event.target.response.length-1, 1) == "}") {
+                                if (regex.json.test(event.target.response)) {
                                     if (options.enableLog) {
                                         console.log("XhrService: Reponse => ", JSON.parse(event.target.response));
                                     }
@@ -185,6 +188,10 @@
             }
         }
 
+        /**
+         * @param Object params - plain object to convert into GET method parameter string.
+         * @return FormData object.
+         */
         _buildParamStr = async (params) => {
             try {
                 let paramStr = "";
